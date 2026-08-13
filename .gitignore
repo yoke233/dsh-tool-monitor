@@ -1,0 +1,7 @@
+node_modules/
+lib/*
+!lib/*.js
+!lib/*.d.ts
+coverage/
+dist/
+*.tgz

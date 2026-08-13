@@ -1,0 +1,8 @@
+- id: jobs
+  disabled: true
+
+- insert:
+    - id: monitor-jobs
+      name: dsh-tool-monitor/registry
+    - id: tool-monitor
+      name: dsh-tool-monitor/tool
