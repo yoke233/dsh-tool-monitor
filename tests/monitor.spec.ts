@@ -3,7 +3,7 @@ import { Context } from '@deepseek-ai/cordis'
 import AgentRegistry from '@deepseek-ai/dsh-agent'
 import type { Agent } from '@deepseek-ai/dsh-agent'
 import type { JobHooks, JobId, JobKind, JobOutcome } from '@deepseek-ai/dsh-jobs'
-import { CallId } from '@deepseek-ai/dsh-llm'
+import { ToolCallId } from '@deepseek-ai/dsh-llm'
 import { SessionId } from '@deepseek-ai/dsh-session'
 import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
 import * as ToolJobs from '@deepseek-ai/dsh-tool-jobs'
@@ -108,7 +108,7 @@ function startStream(
 async function startMonitor(ctx: Context, agent: Agent, target: JobId, pattern = 'error|fatal') {
   const result = await ctx.tools.execute({
     signal: new AbortController().signal,
-    callId: CallId(`monitor-${target}`),
+    callId: ToolCallId(`monitor-${target}`),
     name: 'job_monitor',
     arguments: {
       job_id: target,
@@ -172,7 +172,7 @@ describe('Registry compatibility and lifecycle', () => {
 
     const listed = await ctx.tools.execute({
       signal: new AbortController().signal,
-      callId: CallId('list-monitor-jobs'),
+      callId: ToolCallId('list-monitor-jobs'),
       name: 'job_list',
       arguments: {},
       agent,
@@ -183,7 +183,7 @@ describe('Registry compatibility and lifecycle', () => {
 
     const killed = await ctx.tools.execute({
       signal: new AbortController().signal,
-      callId: CallId('kill-monitor-job'),
+      callId: ToolCallId('kill-monitor-job'),
       name: 'job_kill',
       arguments: { job_id: monitor, reason: 'no longer needed' },
       agent,
@@ -235,7 +235,7 @@ describe('Registry compatibility and lifecycle', () => {
     })
     const result = await ctx.tools.execute({
       signal: new AbortController().signal,
-      callId: CallId('monitor-non-stream'),
+      callId: ToolCallId('monitor-non-stream'),
       name: 'job_monitor',
       arguments: { job_id: target, description: 'not possible' },
       agent,
@@ -259,7 +259,7 @@ describe('Registry compatibility and lifecycle', () => {
 
     const result = await ctx.tools.execute({
       signal: new AbortController().signal,
-      callId: CallId('monitor-foreign'),
+      callId: ToolCallId('monitor-foreign'),
       name: 'job_monitor',
       arguments: { job_id: target, description: 'foreign job' },
       agent: other,
